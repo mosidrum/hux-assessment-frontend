@@ -22,15 +22,13 @@ const Login = () => {
     e.preventDefault();
     axios.post('http://localhost:8081/login', values)
       .then((res) => {
-        if (res.data.Status === 'Success') {
+        if (res.status === 200 ) {
           setMessage('Login Successful');
           navigate(paths.home);
-        } else {
-          alert(res.data.Error);
         }
       })
       .then((err) => {
-        alert(err);
+        console.log(err);
       });
   };
 
