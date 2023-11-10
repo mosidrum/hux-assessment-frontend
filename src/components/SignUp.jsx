@@ -5,6 +5,7 @@ import paths from '../routes/paths';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
   const [values, setValues] = useState({
     name: '',
     email: '',
@@ -20,12 +21,20 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8081/register', values)
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === 200) {
+          setMessage('Sign Up Successful');
+          navigate(paths.login);
+        }
+      })
       .then((err) => console.log(err));
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <div>
+        {message}
+      </div>
       <div>
         <label htmlFor="name">Name</label>
         <input type="name" name="name" id="name" onChange={handleChange} />
