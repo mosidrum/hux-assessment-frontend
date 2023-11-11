@@ -21,13 +21,11 @@ const SignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8081/register', values)
-      .then((res) => {
-        if (res.status === 200) {
-          setMessage('Sign Up Successful');
-          navigate(paths.login);
-        }
+      .then(() => {
+        setMessage('Sign Up Successful');
+        navigate(paths.login);
       })
-      .then((err) => setMessage(err.statusText));
+      .catch((err) => setMessage(`${err}`));
   };
 
   return (
