@@ -27,7 +27,7 @@ const SignUp = () => {
           navigate(paths.login);
         }
       })
-      .then((err) => console.log(err));
+      .then((err) => setMessage(err.statusText));
   };
 
   return (

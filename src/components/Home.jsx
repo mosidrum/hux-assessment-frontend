@@ -21,7 +21,7 @@ const Home = () => {
           setMessage(res.data.Error);
         }
       })
-      .then((err) => console.log(err));
+      .then((err) => setMessage(err.statusText));
   }, [navigate]);
 
   const handleLogout = () => {
@@ -30,7 +30,7 @@ const Home = () => {
         setAuth(false);
         setUser('');
         navigate(paths.login);
-      }).catch((err) => console.log(err));
+      }).catch((err) => setMessage(err));
   };
 
   return (
