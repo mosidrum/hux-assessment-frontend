@@ -2,53 +2,68 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import paths from '../routes/paths';
+import useAuthStore from '../store/authStore';
 
 const Home = () => {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState(false);
-  const [message, setMessage] = useState('');
-  const [user, setUser] = useState('');
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const setAuth = useAuthStore((state) => state.setAuth);
 
-  axios.defaults.withCredentials = true;
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    axios.get('http://localhost:8081')
-      .then((res) => {
-        if (res.status === 200) {
-          setAuth(true);
-          setUser(res.data.name);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081');
+        if (response.status === 200) {
+          setAuth(true, response.data.name); // Update Zustand store
         } else {
-          setAuth(false);
-          setMessage(res.data.Error);
+          setAuth(false, '');
         }
-      })
-      .then((err) => setMessage(err.statusText));
-  }, [navigate]);
+      } catch (error) {
+        setAuth(false, '');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleLogout = () => {
-    axios.get('http://localhost:8081/logout')
-      .then(() => {
-        setAuth(false);
-        setUser('');
-        navigate(paths.login);
-      }).catch((err) => setMessage(err));
+    fetchData();
+  }, [navigate, setAuth]);
+
+  const handleLogout = async () => {
+    try {
+      await axios.get('http://localhost:8081/logout');
+      setAuth(false, '');
+      navigate(paths.login);
+    } catch (error) {
+      // Handle error
+    }
   };
 
   return (
     <div>
-      { auth ? (
-        <div>
-          <h3>
-            you are authorized...
-            {user}
-          </h3>
-          <button type="button" onClick={handleLogout}>Logout</button>
-        </div>
+      {loading ? (
+        <div>Loading...</div>
       ) : (
-        <div>
-          <h3>{message}</h3>
-          <h3>Login</h3>
-          <button type="button" onClick={() => navigate(paths.login)}>Login</button>
-        </div>
+        <>
+          {isAuthenticated ? (
+            <div>
+              <h3>You are authorized,</h3>
+              <h3>{user}</h3>
+              <button type="button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div>
+              <h3>Login</h3>
+              <button type="button" onClick={() => navigate(paths.login)}>
+                Login
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import paths from '../routes/paths';
+import useAuthStore from '../store/authStore';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   const handleChange = (e) => {
     setValues({
@@ -24,11 +26,12 @@ const Login = () => {
       .then((res) => {
         if (res.status === 200) {
           setMessage('Login Successful');
+          setAuth(true, res.data.name);
           navigate(paths.home);
         }
       })
       .then((err) => {
-        setMessage(err.statusText);
+        setMessage(`${err}`);
       });
   };
 
