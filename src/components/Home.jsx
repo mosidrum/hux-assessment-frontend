@@ -10,6 +10,7 @@ const Home = () => {
   const [user, setUser] = useState('');
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const setAuth = useAuthStore((state) => state.setAuth);
+  const [contacts, setContacts] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +35,11 @@ const Home = () => {
     };
 
     fetchData();
+
+    axios.get('http://localhost:8081/')
+      .then((res) => (setContacts(res.data)))
+      .catch((err) => (
+        console.log(err)));
   }, [navigate, setAuth, isAuthenticated]);
 
   const handleLogout = async () => {
@@ -55,8 +61,42 @@ const Home = () => {
         <>
           {isAuthenticated ? (
             <div>
-              <h3>You are authorized,</h3>
-              <h3>{user}</h3>
+              <div className="d-flex vh-100 bg-primary justify-content-center align-items-center">
+                <p>You are authorized,</p>
+                <p>{user}</p>
+                <div className="w-50 bg-white rounded p-3">
+                  <div>
+                    <h2>Contact List</h2>
+                    <button type="button" onClick={() => navigate(paths.createContact)}>Create Contact</button>
+                  </div>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>S/NO</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {contacts.map((contact, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <tr key={index}>
+                          <td>{contact.id}</td>
+                          <td>{contact.name}</td>
+                          <td>{contact.phone}</td>
+                          <td>
+                            <button onClick={() => navigate(`${paths.viewContact}/${contact.id}`)} type="button">View</button>
+                            <button onClick={() => navigate(`${paths.editContact}/${contact.id}`)} type="button">Edit</button>
+                            <button type="button">Delete</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
               <button type="button" onClick={handleLogout}>
                 Logout
               </button>

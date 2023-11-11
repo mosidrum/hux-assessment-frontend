@@ -47,7 +47,10 @@
   "overrides": [
     {
       "files": ["src/**/*Slice.js"],
-      "rules": { "no-param-reassign": ["error", { "props": false }] }
+      "rules": {
+        "no-param-reassign": ["error", { "props": false }],
+        "react/jsx-props-no-spreading": "off"
+      }
     }
   ],
   "ignorePatterns": [

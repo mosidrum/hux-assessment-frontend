@@ -1,10 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import {
-  Home,
+  CreateContact,
+  EditContact, Home,
   Landing,
   Login,
   SignUp,
+  ViewContact,
 } from '../components';
 import paths from './paths';
 
@@ -14,6 +16,9 @@ const AppRoutes = () => (
     <Route path={paths.home} element={<Home />} />
     <Route path={paths.login} element={<Login />} />
     <Route path={paths.signup} element={<SignUp />} />
+    <Route path={paths.createContact} element={<CreateContact />} />
+    <Route path={`${paths.viewContact}/:id`} element={<ViewContact />} />
+    <Route path={`${paths.editContact}/:id`} element={<EditContact />} />
   </Routes>
 );
 
