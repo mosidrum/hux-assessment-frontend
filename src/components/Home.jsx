@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import paths from '../routes/paths';
 import useAuthStore from '../store/authStore';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState('');
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const user = useAuthStore((state) => state.user);
   const setAuth = useAuthStore((state) => state.setAuth);
 
   const [loading, setLoading] = useState(true);
@@ -15,29 +16,34 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8081');
-        if (response.status === 200) {
-          setAuth(true, response.data.name); // Update Zustand store
+        const token = Cookies.get('token');
+        const signedInUser = Cookies.get('user');
+        setUser(signedInUser);
+        if (isAuthenticated || token) {
+          setAuth(true);
         } else {
           setAuth(false, '');
+          navigate(paths.login);
         }
       } catch (error) {
         setAuth(false, '');
+        navigate(paths.login);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [navigate, setAuth]);
+  }, [navigate, setAuth, isAuthenticated]);
 
   const handleLogout = async () => {
     try {
       await axios.get('http://localhost:8081/logout');
-      setAuth(false, '');
+      Cookies.remove('token');
+      Cookies.remove('user');
       navigate(paths.login);
     } catch (error) {
-      // Handle error
+      // error handling and formatting goes here
     }
   };
 
@@ -56,12 +62,7 @@ const Home = () => {
               </button>
             </div>
           ) : (
-            <div>
-              <h3>Login</h3>
-              <button type="button" onClick={() => navigate(paths.login)}>
-                Login
-              </button>
-            </div>
+            navigate(paths.login)
           )}
         </>
       )}
