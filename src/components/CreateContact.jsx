@@ -39,20 +39,20 @@ const CreateContact = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div className="d-flex vh-100 bg-primary justify-content-center align-items-center">
+      <div className="w-50 bg-white rounded p-3">
         <form onSubmit={handleSubmit}>
           <h2>New Contact</h2>
-          <div>
+          <div className="mb-3">
             {message && <div>{message}</div>}
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" placeholder="Enter name" onChange={handleChange} />
+            <input className="form-control" type="text" name="name" placeholder="Enter name" onChange={handleChange} />
           </div>
-          <div>
+          <div className="mb-3">
             <label htmlFor="phone">Phone</label>
-            <input type="contact" name="phone" placeholder="Enter Phone Number" onChange={handleChange} />
+            <input className="form-control" type="contact" name="phone" placeholder="Enter Phone Number" onChange={handleChange} />
           </div>
-          <button type="submit">Create</button>
+          <button className="btn btn-success" type="submit">Create</button>
         </form>
       </div>
     </div>

@@ -53,6 +53,15 @@ const Home = () => {
     }
   };
 
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:8081/delete/${id}`)
+      .then(() => {
+        window.location.reload();
+      }).catch((err) => console.log(err));
+  };
+
+  console.log(contacts);
+
   return (
     <div>
       {loading ? (
@@ -61,13 +70,13 @@ const Home = () => {
         <>
           {isAuthenticated ? (
             <div>
-              <div className="d-flex vh-100 bg-primary justify-content-center align-items-center">
+              <div className="d-flex vh-100 bg-black justify-content-center align-items-center">
                 <p>You are authorized,</p>
                 <p>{user}</p>
                 <div className="w-50 bg-white rounded p-3">
-                  <div>
+                  <div className="d-flex justify-content-between">
                     <h2>Contact List</h2>
-                    <button type="button" onClick={() => navigate(paths.createContact)}>Create Contact</button>
+                    <button className="btn btn-success" type="button" onClick={() => navigate(paths.createContact)}>Create Contact</button>
                   </div>
                   <table className="table">
                     <thead>
@@ -80,15 +89,14 @@ const Home = () => {
                     </thead>
                     <tbody>
                       {contacts.map((contact, index) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <tr key={index}>
-                          <td>{contact.id}</td>
+                        <tr key={contact.id}>
+                          <td>{index + 1}</td>
                           <td>{contact.name}</td>
                           <td>{contact.phone}</td>
                           <td>
-                            <button onClick={() => navigate(`${paths.viewContact}/${contact.id}`)} type="button">View</button>
-                            <button onClick={() => navigate(`${paths.editContact}/${contact.id}`)} type="button">Edit</button>
-                            <button type="button">Delete</button>
+                            <button className="btn btn-sm btn-info" onClick={() => navigate(`${paths.viewContact}/${contact.id}`)} type="button">View</button>
+                            <button className="btn btn-sm btn-primary mx-2" onClick={() => navigate(`${paths.editContact}/${contact.id}`)} type="button">Edit</button>
+                            <button className="btn btn-sm btn-danger" type="button" onClick={() => handleDelete(contact.id)}>Delete</button>
                           </td>
                         </tr>
                       ))}

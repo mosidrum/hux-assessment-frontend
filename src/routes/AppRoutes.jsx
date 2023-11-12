@@ -9,6 +9,7 @@ import {
   ViewContact,
 } from '../components';
 import paths from './paths';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AppRoutes = () => (
   <Routes>
