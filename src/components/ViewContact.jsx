@@ -5,17 +5,23 @@ import paths from '../routes/paths';
 
 const ViewContact = () => {
   const { id } = useParams();
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   useEffect(() => {
     axios.get(`http://localhost:8081/view/${id}`)
       .then((res) => setData(res.data[0]))
-      .catch((err) => console.log(err));
+      .catch((err) => setMessage(err));
   }, [id]);
 
   return (
     <div className="d-flex vh-100 bg-primary justify-content-center align-items-center">
       <div className="w-50 bg-white rounded p-3">
+        {message && (
+          <div>
+            {message}
+          </div>
+        )}
         <h2>Contact Details</h2>
         <h3>{data.id}</h3>
         <h3>{data.name}</h3>

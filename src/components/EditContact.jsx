@@ -4,6 +4,7 @@ import axios from 'axios';
 import paths from '../routes/paths';
 
 const EditContact = () => {
+  const [message, setMessage] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
   const [values, setValues] = useState({
@@ -14,7 +15,7 @@ const EditContact = () => {
   useEffect(() => {
     axios.get(`http://localhost:8081/view/${id}`)
       .then((res) => setValues({ ...values, name: res.data[0].name, phone: res.data[0].phone }))
-      .catch((err) => console.log(err));
+      .catch((err) => setMessage(err));
   }, [id]);
 
   const handleSubmit = (e) => {
@@ -22,12 +23,17 @@ const EditContact = () => {
     axios.put(`http://localhost:8081/edit/${id}`, values)
       .then(() => {
         navigate(paths.home);
-      }).catch((err) => console.log(err));
+      }).catch((err) => setMessage(err));
   };
 
   return (
     <div className="d-flex vh-100 bg-primary justify-content-center align-items-center">
       <div className="w-50 bg-white rounded p-3">
+        {message && (
+          <div>
+            {message}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <h2>Edit Contact</h2>
           <div className="mb-3">

@@ -8,6 +8,7 @@ import useAuthStore from '../store/authStore';
 const Home = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState('');
+  const [message, setMessage] = useState('');
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const setAuth = useAuthStore((state) => state.setAuth);
   const [contacts, setContacts] = useState([]);
@@ -39,7 +40,7 @@ const Home = () => {
     axios.get('http://localhost:8081/')
       .then((res) => (setContacts(res.data)))
       .catch((err) => (
-        console.log(err)));
+        setMessage(err)));
   }, [navigate, setAuth, isAuthenticated]);
 
   const handleLogout = async () => {
@@ -57,10 +58,8 @@ const Home = () => {
     axios.delete(`http://localhost:8081/delete/${id}`)
       .then(() => {
         window.location.reload();
-      }).catch((err) => console.log(err));
+      }).catch((err) => setMessage(err));
   };
-
-  console.log(contacts);
 
   return (
     <div>
@@ -71,9 +70,20 @@ const Home = () => {
           {isAuthenticated ? (
             <div>
               <div className="d-flex vh-100 bg-black justify-content-center align-items-center">
-                <p>You are authorized,</p>
-                <p>{user}</p>
+                {message && (
+                  <div>
+                    {message}
+                  </div>
+                )}
                 <div className="w-50 bg-white rounded p-3">
+                  <div>
+                    <div>
+                      <p>welcome {user}</p>
+                    </div>
+                    <button type="button" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </div>
                   <div className="d-flex justify-content-between">
                     <h2>Contact List</h2>
                     <button className="btn btn-success" type="button" onClick={() => navigate(paths.createContact)}>Create Contact</button>
@@ -105,9 +115,6 @@ const Home = () => {
 
                 </div>
               </div>
-              <button type="button" onClick={handleLogout}>
-                Logout
-              </button>
             </div>
           ) : (
             navigate(paths.login)
