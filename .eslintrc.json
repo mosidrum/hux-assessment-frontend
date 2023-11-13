@@ -35,6 +35,7 @@
     "react/react-in-jsx-scope": "off",
     "import/no-unresolved": "off",
     "no-shadow": "off",
+    "react/jsx-one-expression-per-line": "off",
     "jsx-a11y/label-has-associated-control": [
       "error",
       {
@@ -47,7 +48,10 @@
   "overrides": [
     {
       "files": ["src/**/*Slice.js"],
-      "rules": { "no-param-reassign": ["error", { "props": false }] }
+      "rules": {
+        "no-param-reassign": ["error", { "props": false }],
+        "react/jsx-props-no-spreading": "off"
+      }
     }
   ],
   "ignorePatterns": [
