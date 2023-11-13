@@ -19,9 +19,26 @@ const Login = () => {
     });
   };
 
+  const emailVerification = () => {
+    const regEx = /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+    if (regEx.test(values.email)) {
+      return true;
+    }
+
+    if (!regEx.test(values.email) && values.email !== '') {
+      setMessage('Invalid email');
+    }
+    return false;
+  };
+
   axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
+    emailVerification();
+    if (!values.password) {
+      setMessage('Please enter valid password.');
+      return;
+    }
     axios.post('http://localhost:8081/login', values)
       .then((res) => {
         if (res.status === 200) {
@@ -41,7 +58,7 @@ const Login = () => {
         <h3 className="text-center">Login</h3>
         <form onSubmit={handleSubmit}>
           <div>
-            {message}
+            <i>{message}</i>
           </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email</label>

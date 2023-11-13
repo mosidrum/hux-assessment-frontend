@@ -20,6 +20,10 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!values.name || !values.email || !values.password) {
+      setMessage('Please fill in all the fields.');
+      return;
+    }
     axios.post('http://localhost:8081/register', values)
       .then(() => {
         setMessage('Sign Up Successful');
@@ -34,7 +38,7 @@ const SignUp = () => {
         <h3 className="text-center">SIGN UP</h3>
         <form onSubmit={handleSubmit}>
           <div>
-            {message}
+            <i>{message}</i>
           </div>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">Name</label>

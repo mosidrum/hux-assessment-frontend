@@ -23,6 +23,12 @@ const Home = () => {
         setUser(signedInUser);
         if (isAuthenticated || token) {
           setAuth(true);
+          try {
+            const res = await axios.get('http://localhost:8081/');
+            setContacts(res.data);
+          } catch (err) {
+            setMessage(err.message);
+          }
         } else {
           setAuth(false, '');
           navigate(paths.login);
@@ -36,11 +42,6 @@ const Home = () => {
     };
 
     fetchData();
-
-    axios.get('http://localhost:8081/')
-      .then((res) => (setContacts(res.data)))
-      .catch((err) => (
-        setMessage(err)));
   }, [navigate, setAuth, isAuthenticated]);
 
   const handleLogout = async () => {
