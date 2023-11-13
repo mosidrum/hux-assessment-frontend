@@ -15,19 +15,31 @@ const ViewContact = () => {
   }, [id]);
 
   return (
-    <div className="d-flex vh-100 bg-primary justify-content-center align-items-center">
+    <div className="d-flex vh-100 bg-black justify-content-center align-items-center">
       <div className="w-50 bg-white rounded p-3">
         {message && (
           <div>
             {message}
           </div>
         )}
-        <h2>Contact Details</h2>
-        <h3>{data.id}</h3>
-        <h3>{data.name}</h3>
-        <h3>{data.phone}</h3>
-        <button className="btn btn-primary mx-2" type="button" onClick={() => navigate(paths.home)}>Back</button>
-        <button className="btn btn-primary" type="button">Edit</button>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone Number</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr key={data.id}>
+              <td>{data.name}</td>
+              <td>{data.phone}</td>
+              <td>
+                <button className="btn btn-primary mx-2" type="button" onClick={() => navigate(paths.home)}>Back</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

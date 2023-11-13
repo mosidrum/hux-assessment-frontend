@@ -36,24 +36,32 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          {message}
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" onChange={handleChange} />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" onChange={handleChange} />
-        </div>
-        <button type="submit">Login</button>
-        <div>
-          <button type="button" onClick={() => navigate(paths.signup)}>CLick here to Signup</button>
-        </div>
-      </form>
+    <div className="d-flex vh-100 bg-black justify-content-center align-items-center">
+      <div className="w-25 bg-white rounded p-3 shadow-lg">
+        <h3 className="text-center">Login</h3>
+        <form onSubmit={handleSubmit}>
+          <div>
+            {message}
+          </div>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input type="email" className="form-control" name="email" id="email" onChange={handleChange} />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Password</label>
+            <input type="password" className="form-control" name="password" id="password" onChange={handleChange} />
+          </div>
+          <div className="d-flex flex-column text-center mb-3">
+            <button type="submit" className="btn btn-primary">Login</button>
+          </div>
+          <div className="d-flex flex-column text-center mb-3">
+            <button type="button" className="btn btn-primary" onClick={() => navigate(paths.signup)}>CLick here to Signup</button>
+          </div>
+          <div className="d-flex flex-column text-center mb-3">
+            <button type="button" className="btn btn-primary" onClick={() => navigate(paths.landing)}>Go Back</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -75,18 +75,19 @@ const Home = () => {
                     {message}
                   </div>
                 )}
-                <div className="w-50 bg-white rounded p-3">
-                  <div>
+                <div className="w-75 bg-white rounded p-3">
+                  <div className="d-flex justify-content-end align-items-center gap-2 mb-5">
                     <div>
-                      <p>welcome {user}</p>
+                      {/* eslint-disable react/jsx-one-expression-per-line */}
+                      <p className="m-0"> Welcome {user} !</p>
                     </div>
-                    <button type="button" onClick={handleLogout}>
+                    <button type="button" className="btn btn-danger" onClick={handleLogout}>
                       Logout
                     </button>
                   </div>
                   <div className="d-flex justify-content-between">
                     <h2>Contact List</h2>
-                    <button className="btn btn-success" type="button" onClick={() => navigate(paths.createContact)}>Create Contact</button>
+                    <button className="btn btn-outline-primary" type="button" onClick={() => navigate(paths.createContact)}>Create Contact</button>
                   </div>
                   <table className="table">
                     <thead>
