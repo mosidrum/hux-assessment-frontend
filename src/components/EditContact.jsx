@@ -16,7 +16,7 @@ const EditContact = () => {
     axios.get(`http://localhost:8081/view/${id}`)
       .then((res) => setValues({ ...values, name: res.data[0].name, phone: res.data[0].phone }))
       .catch((err) => setMessage(err));
-  }, [id]);
+  }, [id, values]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

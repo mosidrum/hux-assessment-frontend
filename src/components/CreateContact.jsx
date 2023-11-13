@@ -20,7 +20,7 @@ const CreateContact = () => {
     } else {
       navigate(paths.login);
     }
-  });
+  }, [setLoggedIn, navigate]);
 
   const handleChange = (e) => {
     setValues({
